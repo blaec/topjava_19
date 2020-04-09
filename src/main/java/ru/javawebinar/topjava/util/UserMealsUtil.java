@@ -45,7 +45,7 @@ public class UserMealsUtil {
         meals.sort(Comparator.comparing(UserMeal::getDateTime).reversed());
         for (UserMeal meal : meals) {
             if (TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime)) {
-                output.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), true));
+                output.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), dailyCalories.get(meal.getDate()) > caloriesPerDay));
             }
         }
         return output;
