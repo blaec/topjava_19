@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://example.com/functions" prefix="f" %>
 <html>
 <head>
     <title>Meals</title>
@@ -56,7 +57,7 @@
     <c:forEach var="meal" items="${meals}">
         <jsp:useBean id="meal" class="ru.javawebinar.topjava.model.MealTo"/>
         <tr class=${meal.excess ? 'excess' : 'normal'}>
-            <td>${meal.dateTime}</td>
+            <td>${f:formatLocalDateTime(meal.dateTime, 'yyyy-MM-dd HH:mm')}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
             <td><i class="fa fa-plus-circle"></td>
