@@ -42,6 +42,7 @@ public class UserMealsUtil {
         }
 
         List<UserMealWithExcess> output = new ArrayList<>();
+        meals.sort(Comparator.comparing(UserMeal::getDateTime).reversed());
         for (UserMeal meal : meals) {
             if (TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime)) {
                 output.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), true));
@@ -55,6 +56,7 @@ public class UserMealsUtil {
                 .collect(Collectors.groupingBy(UserMeal::getDate, Collectors.summingInt(UserMeal::getCalories)));
         return meals.stream()
                 .filter(meal -> TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime))
+                .sorted(Comparator.comparing(UserMeal::getDateTime).reversed())
                 .map(m -> new UserMealWithExcess(m.getDateTime(), m.getDescription(), m.getCalories(), dailyCalories.get(m.getDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
     }
