@@ -1,7 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Meals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         table {
             border-collapse: collapse;
@@ -28,6 +30,14 @@
             font-size: 23px;
             font-weight: bold;
         }
+
+        .excess {
+            color: red;
+        }
+
+        .normal {
+            color: #4CAF50;
+        }
     </style>
 </head>
 <body>
@@ -43,13 +53,16 @@
     <th>Remove</th>
     </thead>
     <tbody>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
+    <c:forEach var="meal" items="${meals}">
+        <jsp:useBean id="meal" class="ru.javawebinar.topjava.model.MealTo"/>
+        <tr class=${meal.excess ? 'excess' : 'normal'}>
+            <td>${meal.dateTime}</td>
+            <td>${meal.description}</td>
+            <td>${meal.calories}</td>
+            <td><i class="fa fa-plus-circle"></td>
+            <td><i class="fa fa-trash"></td>
+        </tr>
+    </c:forEach>
     </tbody>
     <tfoot></tfoot>
 </table>
