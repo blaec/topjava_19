@@ -4,18 +4,19 @@ import ru.javawebinar.topjava.model.Meal;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Repository {
-    private static List<Meal> meals;
+    private static Map<Integer, Meal> meals;
     private static AtomicInteger id;
 
     static {
         id = new AtomicInteger(0);
-        meals = Arrays.asList(
+        meals = new ConcurrentHashMap<>();
+        List<Meal> initMeals = Arrays.asList(
                 new Meal(id.addAndGet(1), LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
                 new Meal(id.addAndGet(1), LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000),
                 new Meal(id.addAndGet(1), LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500),
@@ -24,14 +25,17 @@ public class Repository {
                 new Meal(id.addAndGet(1), LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500),
                 new Meal(id.addAndGet(1), LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
         );
+        for (Meal meal : initMeals) {
+            meals.put(meal.getId(), meal);
+        }
     }
 
     public static void createMeal(Meal meal) {
-        meals.add(meal);
+//        meals.add(meal);
     }
 
     public static List<Meal> getMeals() {
-        return meals;
+        return new ArrayList<>(Repository.meals.values());
     }
 
     public static void updateMeal(Meal meal) {

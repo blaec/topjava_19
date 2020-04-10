@@ -69,12 +69,12 @@
     <tbody>
     <c:forEach var="meal" items="${meals}">
         <jsp:useBean id="meal" class="ru.javawebinar.topjava.model.MealTo"/>
-        <tr id=${meal.id} class=${meal.excess ? 'excess' : 'normal'}>
+        <tr class=${meal.excess ? 'excess' : 'normal'}>
             <td>${f:formatLocalDateTime(meal.dateTime, 'yyyy-MM-dd HH:mm')}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
-            <td><i class="fa fa-edit"></i></td>
-            <td><i class="fa fa-trash"></i></td>
+            <td><a href="meals?action=edit&id=${meal.id}" class="fa fa-edit"></a></td>
+            <td><a href="meals?action=delete&id=${meal.id}" class="fa fa-trash"></a></td>
         </tr>
     </c:forEach>
     </tbody>
