@@ -39,6 +39,19 @@
         .normal {
             color: #4CAF50;
         }
+
+        .date {
+            width: 20%
+        }
+        .description {
+            width: 50%
+        }
+        .calories {
+            width: 15%
+        }
+        .symbol {
+            width: 7.5%
+        }
     </style>
 </head>
 <body>
@@ -47,21 +60,21 @@
 <table>
     <thead>
     <caption>Meals</caption>
-    <th>Date</th>
-    <th>Description</th>
-    <th>Calories</th>
-    <th>Add</th>
-    <th>Remove</th>
+    <th class="date">Date</th>
+    <th class="description">Description</th>
+    <th class="calories">Calories</th>
+    <th class="symbol">Edit</th>
+    <th class="symbol">Remove</th>
     </thead>
     <tbody>
     <c:forEach var="meal" items="${meals}">
         <jsp:useBean id="meal" class="ru.javawebinar.topjava.model.MealTo"/>
-        <tr class=${meal.excess ? 'excess' : 'normal'}>
+        <tr id=${meal.id} class=${meal.excess ? 'excess' : 'normal'}>
             <td>${f:formatLocalDateTime(meal.dateTime, 'yyyy-MM-dd HH:mm')}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
-            <td><i class="fa fa-plus-circle"></td>
-            <td><i class="fa fa-trash"></td>
+            <td><i class="fa fa-edit"></i></td>
+            <td><i class="fa fa-trash"></i></td>
         </tr>
     </c:forEach>
     </tbody>

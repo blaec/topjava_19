@@ -1,8 +1,10 @@
 package ru.javawebinar.topjava.model;
 
+import com.sun.xml.internal.messaging.saaj.packaging.mime.util.BEncoderStream;
+
 import java.time.LocalDateTime;
 
-public class MealTo {
+public class MealTo extends BaseEntity {
     private LocalDateTime dateTime;
 
     private String description;
@@ -13,7 +15,8 @@ public class MealTo {
 //    private final AtomicBoolean excess;
     private boolean excess;
 
-    public MealTo(LocalDateTime dateTime, String description, int calories, boolean excess) {
+    public MealTo(int id, LocalDateTime dateTime, String description, int calories, boolean excess) {
+        super(id);
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;

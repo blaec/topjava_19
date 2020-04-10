@@ -2,11 +2,10 @@ package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
+import ru.javawebinar.topjava.repository.Repository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
@@ -20,33 +19,26 @@ import static java.util.stream.Collectors.toList;
 import static ru.javawebinar.topjava.util.TimeUtil.isBetweenInclusive;
 
 public class MealsUtil {
-    public static List<Meal> MEALS = Arrays.asList(
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
-    );
+    public static final LocalTime MIN = LocalTime.of(0, 0, 0);
+    public static final LocalTime MAX = LocalTime.of(23, 59, 59);
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         final LocalTime startTime = LocalTime.of(7, 0);
         final LocalTime endTime = LocalTime.of(12, 0);
 
-        List<MealTo> mealsTo = filteredByStreams(MEALS, startTime, endTime, 2000);
+        List<MealTo> mealsTo = filteredByStreams(Repository.getMeals(), startTime, endTime, 2000);
         mealsTo.forEach(System.out::println);
 
-        System.out.println(filteredByCycles(MEALS, startTime, endTime, 2000));
-        System.out.println(filteredByRecursion(MEALS, startTime, endTime, 2000));
-//        System.out.println(filteredByAtomic(MEALS, startTime, endTime, 2000));
-//        System.out.println(filteredByClosure(MEALS, startTime, endTime, 2000));
-        System.out.println(filteredByExecutor(MEALS, startTime, endTime, 2000));
-        System.out.println(filteredByLock(MEALS, startTime, endTime, 2000));
-        System.out.println(filteredByCountDownLatch(MEALS, startTime, endTime, 2000));
-        System.out.println(filteredByPredicate(MEALS, startTime, endTime, 2000));
-        System.out.println(filteredByFlatMap(MEALS, startTime, endTime, 2000));
-        System.out.println(filteredByCollector(MEALS, startTime, endTime, 2000));
+        System.out.println(filteredByCycles(Repository.getMeals(), startTime, endTime, 2000));
+        System.out.println(filteredByRecursion(Repository.getMeals(), startTime, endTime, 2000));
+//        System.out.println(filteredByAtomic(getMeals(), startTime, endTime, 2000));
+//        System.out.println(filteredByClosure(getMeals(), startTime, endTime, 2000));
+        System.out.println(filteredByExecutor(Repository.getMeals(), startTime, endTime, 2000));
+        System.out.println(filteredByLock(Repository.getMeals(), startTime, endTime, 2000));
+        System.out.println(filteredByCountDownLatch(Repository.getMeals(), startTime, endTime, 2000));
+        System.out.println(filteredByPredicate(Repository.getMeals(), startTime, endTime, 2000));
+        System.out.println(filteredByFlatMap(Repository.getMeals(), startTime, endTime, 2000));
+        System.out.println(filteredByCollector(Repository.getMeals(), startTime, endTime, 2000));
     }
 
     public static List<MealTo> filteredByStreams(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
@@ -256,6 +248,6 @@ public class MealsUtil {
     }
 
     private static MealTo createTo(Meal meal, boolean excess) {
-        return new MealTo(meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
+        return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
 }
