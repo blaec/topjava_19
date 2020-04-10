@@ -81,7 +81,7 @@
 <hr>
 <div class="container">
     <h2>${action} meal</h2>
-    <form method="POST" action=${action}>
+    <form method="POST">
         <c:set var="usermeal" value="${meal}" />
         <jsp:useBean id="usermeal" class="ru.javawebinar.topjava.model.MealTo"/>
 
@@ -90,7 +90,7 @@
                 <label for="fdate">Date</label>
             </div>
             <div class="col-75">
-                <input type="datetime-local" id="fdate" name="fdate" value=${usermeal.dateTime}>
+                <input type="datetime-local" id="fdate" name="fdate" value="${usermeal.dateTime}">
             </div>
         </div>
         <div class="row">
@@ -98,15 +98,15 @@
                 <label for="fdescription">Description</label>
             </div>
             <div class="col-75">
-                <input type="text" id="fdescription" name="fdescription" value=${usermeal.description}>
+                <input type="text" id="fdescription" name="fdescription" value="${usermeal.description}">
             </div>
         </div>
         <div class="row">
             <div class="col-25">
-                <label for="tcalories">Calories</label>
+                <label for="fcalories">Calories</label>
             </div>
             <div class="col-75">
-                <input type="text" id="tcalories" name="tcalories" value=${usermeal.calories}>
+                <input type="text" id="fcalories" name="fcalories" value="${usermeal.calories}">
             </div>
         </div>
 

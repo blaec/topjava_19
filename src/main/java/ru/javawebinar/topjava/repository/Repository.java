@@ -35,7 +35,9 @@ public class Repository {
     }
 
     public static void createMeal(Meal meal) {
-//        meals.add(meal);
+        int id = Repository.id.addAndGet(1);
+        meal.setId(id);
+        meals.put(id, meal);
     }
 
     public static List<Meal> getMeals() {
@@ -47,8 +49,8 @@ public class Repository {
     }
 
     public static void updateMeal(Meal meal) {
-        meals.remove(meal);
-        createMeal(meal);
+        int id = meal.getId();
+        meals.replace(id, meals.get(id), meal);
     }
 
     public static void deleteMeal(int id) {

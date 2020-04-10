@@ -1,7 +1,5 @@
 package ru.javawebinar.topjava.model;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class BaseEntity {
     private int id;
 
@@ -13,5 +11,9 @@ public class BaseEntity {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

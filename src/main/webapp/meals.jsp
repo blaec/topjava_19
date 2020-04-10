@@ -8,7 +8,7 @@
     <style>
         table {
             border-collapse: collapse;
-            width: 80%;
+            width: 60%;
             margin: auto;
         }
 
