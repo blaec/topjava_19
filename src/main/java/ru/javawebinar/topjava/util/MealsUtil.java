@@ -2,7 +2,7 @@ package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
-import ru.javawebinar.topjava.repository.Repository;
+import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -26,19 +26,19 @@ public class MealsUtil {
         final LocalTime startTime = LocalTime.of(7, 0);
         final LocalTime endTime = LocalTime.of(12, 0);
 
-        List<MealTo> mealsTo = filteredByStreams(Repository.getMeals(), startTime, endTime, 2000);
+        List<MealTo> mealsTo = filteredByStreams(MealRepository.getMeals(), startTime, endTime, 2000);
         mealsTo.forEach(System.out::println);
 
-        System.out.println(filteredByCycles(Repository.getMeals(), startTime, endTime, 2000));
-        System.out.println(filteredByRecursion(Repository.getMeals(), startTime, endTime, 2000));
+        System.out.println(filteredByCycles(MealRepository.getMeals(), startTime, endTime, 2000));
+        System.out.println(filteredByRecursion(MealRepository.getMeals(), startTime, endTime, 2000));
 //        System.out.println(filteredByAtomic(getMeals(), startTime, endTime, 2000));
 //        System.out.println(filteredByClosure(getMeals(), startTime, endTime, 2000));
-        System.out.println(filteredByExecutor(Repository.getMeals(), startTime, endTime, 2000));
-        System.out.println(filteredByLock(Repository.getMeals(), startTime, endTime, 2000));
-        System.out.println(filteredByCountDownLatch(Repository.getMeals(), startTime, endTime, 2000));
-        System.out.println(filteredByPredicate(Repository.getMeals(), startTime, endTime, 2000));
-        System.out.println(filteredByFlatMap(Repository.getMeals(), startTime, endTime, 2000));
-        System.out.println(filteredByCollector(Repository.getMeals(), startTime, endTime, 2000));
+        System.out.println(filteredByExecutor(MealRepository.getMeals(), startTime, endTime, 2000));
+        System.out.println(filteredByLock(MealRepository.getMeals(), startTime, endTime, 2000));
+        System.out.println(filteredByCountDownLatch(MealRepository.getMeals(), startTime, endTime, 2000));
+        System.out.println(filteredByPredicate(MealRepository.getMeals(), startTime, endTime, 2000));
+        System.out.println(filteredByFlatMap(MealRepository.getMeals(), startTime, endTime, 2000));
+        System.out.println(filteredByCollector(MealRepository.getMeals(), startTime, endTime, 2000));
     }
 
     public static List<MealTo> filteredByStreams(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {

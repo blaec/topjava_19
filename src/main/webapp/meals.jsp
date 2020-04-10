@@ -55,7 +55,7 @@
     </style>
 </head>
 <body>
-<h3><a href="index.html">Home</a></h3>
+<h3><a href="index.html" class="fa fa-home"> Home</a></h3>
 <hr>
 <table>
     <thead>
