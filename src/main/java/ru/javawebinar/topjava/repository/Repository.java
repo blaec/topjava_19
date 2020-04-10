@@ -1,12 +1,16 @@
 package ru.javawebinar.topjava.repository;
 
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.model.MealTo;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Repository {
@@ -36,6 +40,10 @@ public class Repository {
 
     public static List<Meal> getMeals() {
         return new ArrayList<>(Repository.meals.values());
+    }
+
+    public static MealTo getMeal(int id) {
+        return MealsUtil.createTo(meals.get(id), true);
     }
 
     public static void updateMeal(Meal meal) {

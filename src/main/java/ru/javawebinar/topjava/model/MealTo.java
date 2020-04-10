@@ -1,7 +1,5 @@
 package ru.javawebinar.topjava.model;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.util.BEncoderStream;
-
 import java.time.LocalDateTime;
 
 public class MealTo extends BaseEntity {

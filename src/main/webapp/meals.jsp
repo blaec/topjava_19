@@ -78,7 +78,11 @@
         </tr>
     </c:forEach>
     </tbody>
-    <tfoot></tfoot>
+    <tfoot>
+        <tr>
+            <td colspan="5"><a href="meals?action=create" class="fa fa-plus"> Add new meal</a></td>
+        </tr>
+    </tfoot>
 </table>
 </body>
 </html>
