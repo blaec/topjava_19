@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -54,6 +55,7 @@ public class MealsUtil {
 
         return meals.stream()
                 .filter(filter)
+                .filter(m -> m.getUserId() == SecurityUtil.authUserId())
                 .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
     }

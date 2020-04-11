@@ -8,7 +8,25 @@
 <hr>
 <ul>
     <li><a href="users">Users</a></li>
-    <li><a href="meals">Meals</a></li>
+    <li><a id="meals" href="meals?userId=1">Meals</a></li>
 </ul>
+
+<label for="users">Select user:</label>
+
+<select id="users" onchange="login()">
+    <option value="admin" id="1">Admin</option>
+    <option value="user" id="2">User</option>
+</select>
+<p id="message">Logged as admin</p>
 </body>
 </html>
+<script>
+    function login() {
+        var selector = document.getElementById("users");
+        var option = selector.options[selector.selectedIndex].value;
+        var id = selector.options[selector.selectedIndex].getAttribute("id");
+
+        document.getElementById("message").innerHTML = "Logged as " + option;
+        document.getElementById("meals").setAttribute("href", "meals?userId=" + id);
+    }
+</script>
