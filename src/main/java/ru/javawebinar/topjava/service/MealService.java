@@ -7,6 +7,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.util.Collection;
 
+import static ru.javawebinar.topjava.util.ValidationUtil.assureMealBelongsToUser;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -19,19 +20,26 @@ public class MealService {
         return repository.save(meal);
     };
 
-    public void delete(int id) {
+    public void delete(int id, int userId) {
+        assureMealBelongsToUser(getMealWithId(id), userId);
         checkNotFoundWithId(repository.delete(id), id);
     };
 
-    public Meal get(int id) {
-        return checkNotFoundWithId(repository.get(id), id);
+    public Meal get(int id, int userId) {
+        Meal meal = getMealWithId(id);
+        assureMealBelongsToUser(meal, userId);
+        return checkNotFoundWithId(meal, id);
     };
 
-    public Collection<Meal> getAll() {
-        return repository.getAll();
+    public Collection<Meal> getAll(int userId) {
+        return repository.getAll(userId);
     };
 
     public void update(Meal meal) {
         checkNotFoundWithId(repository.save(meal), meal.getId());
     };
+
+    private Meal getMealWithId(int id) {
+        return repository.get(id);
+    }
 }

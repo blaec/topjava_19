@@ -35,15 +35,15 @@ public class MealsUtil {
             new Meal(USER_ID, LocalDateTime.of(2020, Month.FEBRUARY, 2, 20, 0), "Ужин", 410)
     );
 
-    public static List<MealTo> getTos(Collection<Meal> meals, int caloriesPerDay) {
-        return filteredByStreams(meals, caloriesPerDay, meal -> true);
+    public static List<MealTo> getTos(Collection<Meal> meals, int caloriesPerDay, int userId) {
+        return filteredByStreams(meals, caloriesPerDay, userId, meal -> true);
     }
 
-    public static List<MealTo> getFilteredTos(Collection<Meal> meals, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
-        return filteredByStreams(meals, caloriesPerDay, meal -> DateTimeUtil.isBetweenInclusive(meal.getTime(), startTime, endTime));
-    }
+//    public static List<MealTo> getFilteredTos(Collection<Meal> meals, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
+//        return filteredByStreams(meals, caloriesPerDay, meal -> DateTimeUtil.isBetweenInclusive(meal.getTime(), startTime, endTime));
+//    }
 
-    public static List<MealTo> filteredByStreams(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {
+    public static List<MealTo> filteredByStreams(Collection<Meal> meals, int caloriesPerDay, int userId, Predicate<Meal> filter) {
         Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
                 .collect(
                         Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
@@ -52,7 +52,7 @@ public class MealsUtil {
 
         return meals.stream()
                 .filter(filter)
-                .filter(m -> m.getUserId() == SecurityUtil.authUserId())
+                .filter(m -> m.getUserId() == userId)
                 .sorted(Comparator.comparing(Meal::getDate).reversed())
                 .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
@@ -60,5 +60,11 @@ public class MealsUtil {
 
     private static MealTo createTo(Meal meal, boolean excess) {
         return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
+    }
+
+    public static Meal convertTo(MealTo mealTo, int userId) {
+        return mealTo.isNew()
+                ? new Meal(userId, mealTo.getDateTime(), mealTo.getDescription(), mealTo.getCalories())
+                : new Meal(mealTo.getId(), userId, mealTo.getDateTime(), mealTo.getDescription(), mealTo.getCalories());
     }
 }
