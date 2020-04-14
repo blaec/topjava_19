@@ -7,6 +7,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
@@ -17,9 +18,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
@@ -77,8 +82,20 @@ public class MealServlet extends HttpServlet {
                 break;
             case "all":
             default:
-                log.info("getAll");
-                request.setAttribute("meals", controller.getAll());
+                String dateFrom = request.getParameter("fdatefrom");
+                String dateTo = request.getParameter("fdateto");
+                String timeFrom = request.getParameter("ftimefrom");
+                String timeTo = request.getParameter("ftimeto");
+
+                Collection<MealTo> meals;
+                if (Stream.of(dateFrom, dateTo, timeFrom, timeTo).allMatch(Objects::isNull)) {
+                    log.info("getAll");
+                    meals = controller.getAll();
+                } else {
+                    log.info("getAll filtered");
+                    meals = controller.getAllFiltered(dateFrom, dateTo, timeFrom, timeTo);
+                }
+                request.setAttribute("meals", meals);
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }

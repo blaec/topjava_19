@@ -2,7 +2,6 @@ package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealTo;
-import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,9 +38,11 @@ public class MealsUtil {
         return filteredByStreams(meals, caloriesPerDay, userId, meal -> true);
     }
 
-//    public static List<MealTo> getFilteredTos(Collection<Meal> meals, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
-//        return filteredByStreams(meals, caloriesPerDay, meal -> DateTimeUtil.isBetweenInclusive(meal.getTime(), startTime, endTime));
-//    }
+    public static List<MealTo> getFilteredTos(Collection<Meal> meals, int caloriesPerDay, LocalDateTime from, LocalDateTime to, int userId) {
+        return filteredByStreams(meals, caloriesPerDay, userId, meal ->
+                DateTimeUtil.isBetweenDateInclusive(meal.getDate(), from.toLocalDate(), to.toLocalDate()) &&
+                DateTimeUtil.isBetweenTimeInclusive(meal.getTime(), from.toLocalTime(), to.toLocalTime()));
+    }
 
     public static List<MealTo> filteredByStreams(Collection<Meal> meals, int caloriesPerDay, int userId, Predicate<Meal> filter) {
         Map<LocalDate, Integer> caloriesSumByDate = meals.stream()

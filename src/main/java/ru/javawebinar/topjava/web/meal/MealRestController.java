@@ -7,9 +7,13 @@ import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.SecurityUtil;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collection;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
@@ -58,4 +62,17 @@ public class MealRestController {
         Meal meal = MealsUtil.convertTo(mealTo, userId);
         service.update(meal);
     };
+
+    public Collection<MealTo> getAllFiltered(String dateFrom, String dateTo, String timeFrom, String timeTo) {
+        log.info("getAllFiltered");
+        LocalDateTime from = LocalDateTime.of(
+                DateTimeUtil.toLocalDate(dateFrom, LocalDate.MIN),
+                DateTimeUtil.toLocalTime(timeFrom, LocalTime.MIN));
+        LocalDateTime to = LocalDateTime.of(
+                DateTimeUtil.toLocalDate(dateTo, LocalDate.MAX),
+                DateTimeUtil.toLocalTime(timeTo, LocalTime.MAX));
+        int userId = SecurityUtil.authUserId();
+        Collection<Meal> meals = service.getAll(userId);
+        return MealsUtil.getFilteredTos(meals, MealsUtil.DEFAULT_CALORIES_PER_DAY, from, to, userId);
+    }
 }
