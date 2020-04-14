@@ -17,6 +17,7 @@ public class MealService {
     private MealRepository repository;
 
     public Meal create(Meal meal) {
+        assureMealBelongsToUser(meal, meal.getUserId());
         return repository.save(meal);
     };
 
@@ -36,10 +37,11 @@ public class MealService {
     };
 
     public void update(Meal meal) {
+        assureMealBelongsToUser(meal, meal.getUserId());
         checkNotFoundWithId(repository.save(meal), meal.getId());
     };
 
     private Meal getMealWithId(int id) {
-        return repository.get(id);
+        return checkNotFoundWithId(repository.get(id), id);
     }
 }

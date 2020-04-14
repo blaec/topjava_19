@@ -5,7 +5,6 @@ import ru.javawebinar.topjava.to.MealTo;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
 import java.util.function.Predicate;
@@ -40,8 +39,8 @@ public class MealsUtil {
 
     public static List<MealTo> getFilteredTos(Collection<Meal> meals, int caloriesPerDay, LocalDateTime from, LocalDateTime to, int userId) {
         return filteredByStreams(meals, caloriesPerDay, userId, meal ->
-                DateTimeUtil.isBetweenDateInclusive(meal.getDate(), from.toLocalDate(), to.toLocalDate()) &&
-                DateTimeUtil.isBetweenTimeInclusive(meal.getTime(), from.toLocalTime(), to.toLocalTime()));
+                DateTimeUtil.isBetweenInclusive(meal.getDate(), from.toLocalDate(), to.toLocalDate()) &&
+                DateTimeUtil.isBetweenInclusive(meal.getTime(), from.toLocalTime(), to.toLocalTime()));
     }
 
     public static List<MealTo> filteredByStreams(Collection<Meal> meals, int caloriesPerDay, int userId, Predicate<Meal> filter) {
