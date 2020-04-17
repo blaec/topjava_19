@@ -27,8 +27,14 @@ public class MealTestData {
     public static final List<Meal> ADMIN_MEALS = Arrays.asList(ADMIN_MEAL1, ADMIN_MEAL2);
 
 
-        public static Meal getNew() {
+    public static Meal getNew() {
         return new Meal(LocalDateTime.now(), "new meal", 1111);
+    }
+
+    public static Meal getNewDuplicate() {
+        Meal meal = getNew();
+        meal.setDateTime(USER_MEAL1.getDateTime());
+        return meal;
     }
 
     public static Meal getUpdated() {
