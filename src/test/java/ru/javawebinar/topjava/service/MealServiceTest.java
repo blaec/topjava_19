@@ -17,6 +17,7 @@ import java.time.Month;
 import java.util.List;
 
 import static ru.javawebinar.topjava.MealTestData.*;
+import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
 @ContextConfiguration({
@@ -78,6 +79,12 @@ public class MealServiceTest {
         Meal updated = getUpdated();
         service.update(updated, USER_ID);
         assertMatch(service.get(MEAL_ID, USER_ID), updated);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void updateNotFound() throws Exception {
+        Meal updated = getUpdated();
+        service.update(updated, ADMIN_ID);
     }
 
     @Test
