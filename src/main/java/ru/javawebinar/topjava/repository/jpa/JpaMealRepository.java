@@ -27,11 +27,17 @@ public class JpaMealRepository implements MealRepository {
             em.persist(meal);
             return meal;
         } else {
-            if (isOwnMeal(meal.getId(), userId)) {
-                return em.merge(meal);
-            } else {
-                return null;
-            }
+            Query query = em.createQuery("" +
+                    "UPDATE Meal m" +
+                    "   SET m.description=:description, m.calories=:calories, m.dateTime=:dateTime " +
+                    " WHERE m.id=:id AND m.user.id=:userId");
+            return (query.setParameter("description", meal.getDescription())
+                         .setParameter("calories", meal.getCalories())
+                         .setParameter("dateTime", meal.getDateTime())
+                         .setParameter("id", meal.getId())
+                         .setParameter("userId", userId).executeUpdate() == 0)
+                    ? null
+                    : meal;
         }
     }
 
@@ -39,7 +45,7 @@ public class JpaMealRepository implements MealRepository {
     @Transactional
     public boolean delete(int id, int userId) {
         Query query = em.createQuery("DELETE FROM Meal m " +
-                                                  "WHERE m.id=:id AND m.user.id=:userId");
+                "WHERE m.id=:id AND m.user.id=:userId");
         return query
                 .setParameter("id", id)
                 .setParameter("userId", userId)
@@ -48,15 +54,17 @@ public class JpaMealRepository implements MealRepository {
 
     @Override
     public Meal get(int id, int userId) {
-        return !isOwnMeal(id, userId) ? null : em.find(Meal.class, id);
+        Meal meal = em.find(Meal.class, id);
+        boolean isOwnMeal =  meal != null && meal.getUser().getId().equals(userId);
+        return isOwnMeal ? meal : null;
     }
 
     @Override
     public List<Meal> getAll(int userId) {
         Query query = em.createQuery("SELECT m " +
-                                              "FROM Meal m " +
-                                             "WHERE m.user.id=:userId " +
-                                          "ORDER BY m.dateTime DESC");
+                "FROM Meal m " +
+                "WHERE m.user.id=:userId " +
+                "ORDER BY m.dateTime DESC");
         return query
                 .setParameter("userId", userId)
                 .getResultList();
@@ -65,18 +73,13 @@ public class JpaMealRepository implements MealRepository {
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDate, LocalDateTime endDate, int userId) {
         Query query = em.createQuery("SELECT m " +
-                                              "FROM Meal m " +
-                                             "WHERE m.user.id=:userId AND m.dateTime>=:startDate AND m.dateTime<:endDate " +
-                                          "ORDER BY m.dateTime DESC ");
+                "FROM Meal m " +
+                "WHERE m.user.id=:userId AND m.dateTime>=:startDate AND m.dateTime<:endDate " +
+                "ORDER BY m.dateTime DESC ");
         return query
                 .setParameter("userId", userId)
                 .setParameter("startDate", startDate)
                 .setParameter("endDate", endDate)
                 .getResultList();
-    }
-
-    private boolean isOwnMeal(Integer id, Integer userId) {
-        Meal meal = em.find(Meal.class, id);
-        return meal != null && meal.getUser().getId().equals(userId);
     }
 }
