@@ -27,7 +27,11 @@ public class JpaMealRepository implements MealRepository {
             em.persist(meal);
             return meal;
         } else {
-            return em.merge(meal);
+            if (isOwnMeal(meal.getId(), userId)) {
+                return em.merge(meal);
+            } else {
+                return null;
+            }
         }
     }
 
@@ -44,13 +48,15 @@ public class JpaMealRepository implements MealRepository {
 
     @Override
     public Meal get(int id, int userId) {
-        Meal meal = em.find(Meal.class, id);
-        return meal.getUser().getId() == userId ? meal : null;
+        return !isOwnMeal(id, userId) ? null : em.find(Meal.class, id);
     }
 
     @Override
     public List<Meal> getAll(int userId) {
-        Query query = em.createQuery("SELECT m FROM Meal m WHERE m.user.id=:userId");
+        Query query = em.createQuery("SELECT m " +
+                                              "FROM Meal m " +
+                                             "WHERE m.user.id=:userId " +
+                                          "ORDER BY m.dateTime DESC");
         return query
                 .setParameter("userId", userId)
                 .getResultList();
@@ -58,11 +64,19 @@ public class JpaMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        Query query = em.createQuery("SELECT m FROM Meal m WHERE m.user.id=:userId AND m.dateTime>=:startDate AND m.dateTime<:endDate");
+        Query query = em.createQuery("SELECT m " +
+                                              "FROM Meal m " +
+                                             "WHERE m.user.id=:userId AND m.dateTime>=:startDate AND m.dateTime<:endDate " +
+                                          "ORDER BY m.dateTime DESC ");
         return query
                 .setParameter("userId", userId)
                 .setParameter("startDate", startDate)
                 .setParameter("endDate", endDate)
                 .getResultList();
+    }
+
+    private boolean isOwnMeal(Integer id, Integer userId) {
+        Meal meal = em.find(Meal.class, id);
+        return meal != null && meal.getUser().getId().equals(userId);
     }
 }
