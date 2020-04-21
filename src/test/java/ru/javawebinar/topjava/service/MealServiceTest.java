@@ -1,7 +1,9 @@
 package ru.javawebinar.topjava.service;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -32,6 +34,9 @@ public class MealServiceTest {
     @Autowired
     private MealRepository repository;
 
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+
     @Test
     public void delete() throws Exception {
         service.delete(MEAL1_ID, USER_ID);
@@ -43,8 +48,9 @@ public class MealServiceTest {
         service.delete(1, USER_ID);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void deleteNotOwn() throws Exception {
+        expectNotFoundException();
         service.delete(MEAL1_ID, ADMIN_ID);
     }
 
@@ -64,13 +70,15 @@ public class MealServiceTest {
         MEAL_MATCHER.assertMatch(actual, ADMIN_MEAL1);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void getNotFound() throws Exception {
+        expectNotFoundException();
         service.get(1, USER_ID);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void getNotOwn() throws Exception {
+        expectNotFoundException();
         service.get(MEAL1_ID, ADMIN_ID);
     }
 
@@ -81,8 +89,9 @@ public class MealServiceTest {
         MEAL_MATCHER.assertMatch(service.get(MEAL1_ID, USER_ID), updated);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void updateNotFound() throws Exception {
+        expectNotFoundException();
         service.update(MEAL1, ADMIN_ID);
     }
 
@@ -102,5 +111,10 @@ public class MealServiceTest {
     @Test
     public void getBetweenWithNullDates() throws Exception {
         MEAL_MATCHER.assertMatch(service.getBetweenInclusive(null, null, USER_ID), MEALS);
+    }
+
+    private void expectNotFoundException() {
+        exception.expect(NotFoundException.class);
+        exception.expectMessage("Not found entity with ");
     }
 }
