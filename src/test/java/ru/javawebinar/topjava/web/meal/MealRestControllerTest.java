@@ -70,7 +70,7 @@ public class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getByEmail() throws Exception {
+    void getBetween() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL +
                 "filter?startDate=" + LocalDate.of(2020, Month.JANUARY, 30) +
                 "&startTime=" + LocalTime.of(8, 0) +

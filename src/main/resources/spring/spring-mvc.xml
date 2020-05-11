@@ -32,6 +32,26 @@
           p:prefix="/WEB-INF/jsp/"
           p:suffix=".jsp"/>
 
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="registerDefaultFormatters" value="false" />
+        <property name="formatters">
+            <set>
+                <bean class="ru.javawebinar.topjava.util.LocalDateFormatter" />
+            </set>
+        </property>
+        <property name="formatterRegistrars">
+            <set>
+                <bean class="org.springframework.format.datetime.joda.JodaTimeFormatterRegistrar">
+                    <property name="dateFormatter">
+                        <bean class="org.springframework.format.datetime.joda.DateTimeFormatterFactoryBean">
+                            <property name="pattern" value="yyyy-MM-dd"/>
+                        </bean>
+                    </property>
+                </bean>
+            </set>
+        </property>
+    </bean>
+
 <!--
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"
           p:cacheSeconds="60"
