@@ -7,7 +7,7 @@
 
     <bean class="ru.javawebinar.topjava.web.json.JacksonObjectMapper" id="objectMapper" factory-method="getMapper"/>
 
-    <mvc:annotation-driven>
+    <mvc:annotation-driven conversion-service="conversionService">
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper" ref="objectMapper"/>
@@ -36,18 +36,8 @@
         <property name="registerDefaultFormatters" value="false" />
         <property name="formatters">
             <set>
-                <bean class="ru.javawebinar.topjava.util.LocalDateFormatter" />
-            </set>
-        </property>
-        <property name="formatterRegistrars">
-            <set>
-                <bean class="org.springframework.format.datetime.joda.JodaTimeFormatterRegistrar">
-                    <property name="dateFormatter">
-                        <bean class="org.springframework.format.datetime.joda.DateTimeFormatterFactoryBean">
-                            <property name="pattern" value="yyyy-MM-dd"/>
-                        </bean>
-                    </property>
-                </bean>
+                <bean class="ru.javawebinar.topjava.util.DateTimeFormatters$LocalDateFormatter" />
+                <bean class="ru.javawebinar.topjava.util.DateTimeFormatters$LocalTimeFormatter" />
             </set>
         </property>
     </bean>

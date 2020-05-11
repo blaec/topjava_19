@@ -83,6 +83,19 @@ public class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void getBetweenNullable() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + "filter")
+                .param("startDate", "")
+                .param("endDate", "")
+                .param("startTime", LocalTime.of(8, 0).toString())
+                .param("endTime", LocalTime.of(11, 0).toString()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MEAL_TO_MATCHER.contentJson(MealsUtil.createTo(MEAL5, true), MealsUtil.createTo(MEAL1, false)));
+    }
+
+    @Test
     void createWithLocation() throws Exception {
         Meal newMeal = MealTestData.getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
