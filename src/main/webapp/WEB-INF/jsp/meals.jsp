@@ -17,31 +17,31 @@
             <div class="card-body pb-0">
                 <form id="filter">
                     <div class="row">
-                        <div class="offset-1 col-2">
+                        <div class="offset-1 col-3">
                             <label for="startDate"><spring:message code="meal.startDate"/></label>
-                            <input class="form-control" id="startDate" name="startDate" autocomplete="off"/>
+                            <input type="date" class="form-control" id="startDate" name="startDate" autocomplete="off"/>
                         </div>
-                        <div class="col-2">
+                        <div class="col-3">
                             <label for="endDate"><spring:message code="meal.endDate"/></label>
-                            <input class="form-control" id="endDate" name="endDate" autocomplete="off"/>
+                            <input type="date" class="form-control" id="endDate" name="endDate" autocomplete="off"/>
                         </div>
-                        <div class="offset-2 col-2">
+                        <div class="offset-1 col-2">
                             <label for="startTime"><spring:message code="meal.startTime"/></label>
-                            <input class="form-control" id="startTime" name="startTime" autocomplete="off"/>
+                            <input type="time" class="form-control" id="startTime" name="startTime" autocomplete="off"/>
                         </div>
                         <div class="col-2">
                             <label for="endTime"><spring:message code="meal.endTime"/></label>
-                            <input class="form-control" id="endTime" name="endTime" autocomplete="off"/>
+                            <input type="time" class="form-control" id="endTime" name="endTime" autocomplete="off"/>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="card-footer text-right">
-                <button class="btn btn-outline-danger" onclick="alert('clearFilter()')">
+                <button class="btn btn-outline-danger" onclick="clearFilter()">
                     <span class="fa fa-remove"></span>
                     <spring:message code="meal.cancel"/>
                 </button>
-                <button class="btn btn-outline-primary" onclick="alert('updateFilteredTable()')">
+                <button class="btn btn-outline-primary" onclick="updateFilteredTable()">
                     <span class="fa fa-filter"></span>
                     <spring:message code="meal.filter"/>
                 </button>
