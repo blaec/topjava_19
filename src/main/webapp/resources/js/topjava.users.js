@@ -39,4 +39,22 @@ $(function () {
             })
         }
     );
+
+    $(".active").change(function () {
+        let closest = $(this).closest('tr');
+        const isChecked = $(this).is(":checked");
+        if (isChecked) {
+            closest.removeClass("non-active");
+        } else {
+            closest.addClass("non-active");
+        }
+        let userId = closest.attr("userId");
+        $.ajax({
+            url: context.ajaxUrl + "update",
+            type: 'POST',
+            data: `id=${userId}&active=${isChecked}`
+        }).done(function () {
+            successNoty("Saved");
+        });
+    })
 });

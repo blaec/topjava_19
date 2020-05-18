@@ -44,7 +44,8 @@
                         ${user.roles}
                     </td>
                     <td>
-                        <input type="checkbox"
+                        <input class="active"
+                               type="checkbox"
                                <c:if test="${user.enabled}">
                                    checked
                                </c:if>
