@@ -16,6 +16,7 @@
 
     <%--http://stackoverflow.com/a/24070373/548473--%>
     <script type="text/javascript" src="webjars/jquery/3.4.1/jquery.min.js" defer></script>
+    <script type="text/javascript" src="webjars/momentjs/2.24.0/min/moment.min.js" defer></script>
     <script type="text/javascript" src="webjars/bootstrap/4.4.1/dist/js/bootstrap.min.js" defer></script>
     <script type="text/javascript" src="webjars/datatables/1.10.20/js/jquery.dataTables.min.js" defer></script>
     <script type="text/javascript" src="webjars/datatables/1.10.20/js/dataTables.bootstrap4.min.js" defer></script>
