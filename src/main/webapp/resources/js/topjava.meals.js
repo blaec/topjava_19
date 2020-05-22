@@ -62,4 +62,32 @@ $(function () {
         }),
         updateTable: updateFilteredTable
     });
+    $('#dateTime').datetimepicker({
+        theme: 'dark',
+        format: 'Y-m-d H:i'
+    });
+    let endDate = $('#endDate');
+    let startDate = $('#startDate');
+    startDate.datetimepicker({
+        timepicker: false,
+        // onShow: function (ct) {
+        //     this.setOptions({
+        //         maxDate: endDate.val() ? endDate.val() : false
+        //     })
+        // },
+        format: 'Y-m-d'
+    });
+    endDate.datetimepicker({
+        timepicker: false,
+        // onShow: function (ct) {
+        //     this.setOptions({
+        //         minDate: startDate.val() ? startDate.val() : false
+        //     })
+        // },
+        format: 'Y-m-d'
+    });
+    $('#startTime,#endTime').datetimepicker({
+        datepicker: false,
+        format: 'H:i'
+    });
 });

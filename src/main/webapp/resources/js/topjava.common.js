@@ -44,6 +44,10 @@ function updateTableByData(data) {
 }
 
 function save() {
+    // form.get(0)[1].value=(new Date(form.get(0)[1].value)).toISOString();
+    if ($("input#dateTime").val()) {
+        $("input#dateTime").val((new Date($("input#dateTime").val())).toISOString());
+    }
     $.ajax({
         type: "POST",
         url: context.ajaxUrl,
