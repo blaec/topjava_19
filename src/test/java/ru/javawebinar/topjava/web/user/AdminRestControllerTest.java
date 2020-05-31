@@ -102,17 +102,22 @@ class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     void createWithLocation() throws Exception {
         User newUser = UserTestData.getNew();
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
+        perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
                 .content(UserTestData.jsonWithPassword(newUser, "newPass")))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
+    }
 
-        User created = readFromJson(action, User.class);
-        int newId = created.id();
-        newUser.setId(newId);
-        USER_MATCHER.assertMatch(created, newUser);
-        USER_MATCHER.assertMatch(userService.get(newId), newUser);
+    @Test
+    void createWithLocationNotValid() throws Exception {
+        User newUser = UserTestData.getNew();
+        newUser.setName("a");
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(UserTestData.jsonWithPassword(newUser, "newPass")))
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
