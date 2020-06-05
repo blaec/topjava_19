@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.web.meal;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +12,11 @@ import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.util.exception.IllegalRequestDataException;
 
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -41,13 +44,14 @@ public class MealUIController extends AbstractMealController {
 
     @PostMapping
     public void createOrUpdate(@Valid Meal meal) {
-//        if (result.hasErrors()) {
-//            throw new IllegalRequestDataException(ValidationUtil.getErrorResponse(result));
-//        }
-        if (meal.isNew()) {
-            super.create(meal);
-        } else {
-            super.update(meal, meal.getId());
+        try {
+            if (meal.isNew()) {
+                super.create(meal);
+            } else {
+                super.update(meal, meal.getId());
+            }
+        } catch (DataIntegrityViolationException e) {
+            throw new ConstraintViolationException("You already have meal with this date/time", new HashSet<>());
         }
     }
 
